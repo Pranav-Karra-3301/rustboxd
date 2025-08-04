@@ -1,0 +1,30 @@
+[package]
+name = "rustboxd"
+version = "0.1.0"
+edition = "2021"
+description = "A Letterboxd web scraper and API client library written in Rust"
+license = "MIT"
+authors = ["Your Name <your.email@example.com>"]
+keywords = ["letterboxd", "webscraper", "movie", "film", "rating", "review", "watchlist", "diary"]
+repository = "https://github.com/Pranav-Karra-3301/rustboxd"
+readme = "README.md"
+
+[dependencies]
+reqwest = { version = "0.12", features = ["json"] }
+scraper = "0.21"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+thiserror = "1.0"
+url = "2.5"
+chrono = { version = "0.4", features = ["serde"] }
+regex = "1.10"
+async-trait = "0.1"
+urlencoding = "2.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+[lib]
+name = "rustboxd"
+path = "src/lib.rs"

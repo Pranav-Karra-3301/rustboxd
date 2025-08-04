@@ -1,0 +1,21 @@
+pub mod user_activity;
+pub mod user_diary;
+pub mod user_films;
+pub mod user_likes;
+pub mod user_lists;
+pub mod user_network;
+pub mod user_profile;
+pub mod user_reviews;
+pub mod user_tags;
+pub mod user_watchlist;
+
+pub use user_activity::UserActivity;
+pub use user_diary::UserDiary;
+pub use user_films::UserFilms;
+pub use user_likes::UserLikes;
+pub use user_lists::UserLists;
+pub use user_network::UserNetwork;
+pub use user_profile::UserProfile;
+pub use user_reviews::UserReviews;
+pub use user_tags::UserTags;
+pub use user_watchlist::UserWatchlist;
