@@ -5,7 +5,7 @@ edition = "2021"
 description = "A Letterboxd web scraper and API client library written in Rust"
 license = "MIT"
 authors = ["Pranav Karra"]
-keywords = ["letterboxd", "webscraper", "movie", "film", "rating", "review", "watchlist", "diary"]
+keywords = ["letterboxd", "webscraper", "movie", "film", "api"]
 repository = "https://github.com/Pranav-Karra-3301/rustboxd"
 readme = "README.md"
 
