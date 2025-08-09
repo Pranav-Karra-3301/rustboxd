@@ -1,6 +1,6 @@
 [package]
 name = "rustboxd"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "A Letterboxd web scraper and API client library written in Rust"
 license = "MIT"
