@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use regex::Regex;
 use crate::core::{Client, Error, Result, constants::DOMAIN};
 use crate::pages::{UserActivity, UserDiary, UserFilms, UserLikes, UserLists, UserNetwork, UserProfile, UserReviews, UserTags, UserWatchlist};
+use crate::models::{WatchlistMovie, DiaryMovieEntry};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
@@ -16,9 +17,16 @@ pub struct User {
     pub website: Option<String>,
     pub watchlist_length: Option<u32>,
     pub stats: Option<UserStats>,
-    pub favorites: Option<Vec<String>>,
+    pub favorites: Option<HashMap<String, FavoriteMovie>>,
     pub avatar: Option<String>,
     pub recent: UserRecent,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FavoriteMovie {
+    pub name: String,
+    pub slug: String,
+    pub url: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -35,7 +43,22 @@ pub struct UserStats {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserRecent {
     pub watchlist: Vec<String>,
-    pub diary: Vec<String>,
+    pub diary: DiaryData,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DiaryData {
+    pub months: HashMap<String, HashMap<String, Vec<DiaryEntry>>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DiaryEntry {
+    pub name: String,
+    pub slug: String,
+    pub rating: Option<f32>,
+    pub review: Option<String>,
+    pub liked: bool,
+    pub rewatch: bool,
 }
 
 #[derive(Debug)]
@@ -128,7 +151,9 @@ impl User {
             avatar: None,
             recent: UserRecent {
                 watchlist: Vec::new(),
-                diary: Vec::new(),
+                diary: DiaryData {
+                    months: HashMap::new(),
+                },
             },
         })
     }
@@ -202,5 +227,15 @@ impl User {
 
     pub async fn get_watchlist(&self) -> Result<HashMap<String, serde_json::Value>> {
         self.pages().watchlist.get_watchlist().await
+    }
+    
+    pub async fn get_watchlist_movies(&self) -> Result<HashMap<String, WatchlistMovie>> {
+        let watchlist_page = self.pages().watchlist;
+        watchlist_page.get_watchlist_movies().await
+    }
+    
+    pub async fn get_diary_entries(&self) -> Result<Vec<DiaryMovieEntry>> {
+        let diary_page = self.pages().diary;
+        diary_page.get_diary_entries().await
     }
 }

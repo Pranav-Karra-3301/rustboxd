@@ -9,9 +9,9 @@ pub struct Movie {
     pub movie_id: Option<u64>,
     pub title: String,
     pub original_title: Option<String>,
-    pub runtime: Option<u32>,
-    pub rating: Option<f32>,
-    pub year: Option<i32>,
+    pub runtime: Option<String>,
+    pub rating: Option<String>,
+    pub year: Option<u16>,
     pub tmdb_link: Option<String>,
     pub imdb_link: Option<String>,
     pub poster: Option<String>,
@@ -21,9 +21,9 @@ pub struct Movie {
     pub trailer: Option<MovieTrailer>,
     pub alternative_titles: Vec<String>,
     pub details: Option<MovieDetails>,
-    pub genres: Vec<String>,
+    pub genres: Vec<HashMap<String, serde_json::Value>>,
     pub cast: Vec<MoviePerson>,
-    pub crew: Vec<MoviePerson>,
+    pub crew: HashMap<String, Vec<HashMap<String, String>>>,
     pub popular_reviews: Vec<MovieReview>,
 }
 
@@ -79,6 +79,7 @@ impl Movie {
 
     fn parse_movie_data(dom: &scraper::Html, slug: &str, url: &str) -> Result<Self> {
         use scraper::Selector;
+        use serde_json::json;
         
         let title_selector = Selector::parse("h1.headline-1").unwrap();
         let year_selector = Selector::parse(".film-poster").unwrap();
@@ -100,7 +101,7 @@ impl Movie {
 
         let rating = dom.select(&rating_selector)
             .next()
-            .and_then(|el| el.inner_html().parse().ok());
+            .map(|el| el.inner_html());
 
         let tagline = dom.select(&tagline_selector)
             .next()
@@ -110,9 +111,19 @@ impl Movie {
             .next()
             .map(|el| el.inner_html());
 
-        let genres: Vec<String> = dom.select(&genres_selector)
-            .map(|el| el.inner_html())
+        // Convert genres to match letterboxdpy format
+        let genres: Vec<HashMap<String, serde_json::Value>> = dom.select(&genres_selector)
+            .map(|el| {
+                let mut genre_map = HashMap::new();
+                genre_map.insert("type".to_string(), json!("genre"));
+                genre_map.insert("name".to_string(), json!(el.inner_html()));
+                genre_map
+            })
             .collect();
+
+        // Initialize crew as HashMap with director key
+        let mut crew = HashMap::new();
+        crew.insert("director".to_string(), Vec::new());
 
         Ok(Movie {
             url: url.to_string(),
@@ -134,7 +145,7 @@ impl Movie {
             details: None, // TODO: Parse movie details
             genres,
             cast: Vec::new(), // TODO: Parse cast
-            crew: Vec::new(), // TODO: Parse crew
+            crew,
             popular_reviews: Vec::new(), // TODO: Parse reviews
         })
     }

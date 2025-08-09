@@ -9,7 +9,11 @@ pub mod pages;
 pub mod utils;
 
 // Re-export main types
-pub use models::{User, Movie, Search, Films, List};
+pub use models::{
+    User, Movie, Search, Films, List,
+    FavoriteMovie, UserRecent, DiaryData, DiaryEntry,
+    WatchlistMovie, DiaryMovieEntry
+};
 pub use core::{Error, Result, Client};
 
 pub use chrono;
