@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use crate::core::{Client, Result, constants::DOMAIN};
 use crate::models::{DiaryMovieEntry, Movie};
-use scraper::{Html, Selector};
+use scraper::Selector;
 
 #[derive(Debug)]
 pub struct UserDiary {
