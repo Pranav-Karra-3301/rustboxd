@@ -21,7 +21,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rustboxd = "0.1.0"
+rustboxd = "0.2"
 tokio = { version = "1.0", features = ["full"] }
 ```
 
@@ -457,4 +457,8 @@ This is an unofficial library for educational and research purposes. Please resp
 
 - [letterboxdpy](https://github.com/nmcassa/letterboxdpy) - Python library that inspired this project
 - [letterboxd-api](https://api-docs.letterboxd.com/) - Official Letterboxd API (requires authentication)
-letterboxd webscraper in rust
+- [lbxd](https://github.com/Pranav-Karra-3301/lbxd) - Letterboxd CLI built on top of this library
+
+---
+
+Built by [Pranav Karra](https://pranavkarra.me)
